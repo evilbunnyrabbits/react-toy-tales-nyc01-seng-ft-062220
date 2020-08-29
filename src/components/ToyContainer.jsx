@@ -6,7 +6,12 @@ import ToyCard from './ToyCard'
 class ToyContainer extends React.Component {
 
   renderToys = () => {
-    return this.props.toys.map(toy => <ToyCard key={toy.id} toy={toy} deleteHandler={this.props.deleteHandler}/>)
+    return this.props.toys.map(toy => <ToyCard
+
+        key={toy.id}
+        toy={toy}
+        deleteHandler={this.props.deleteHandler}
+        likeHandler={this.props.likeHandler}/>)
   }
 
   render () {

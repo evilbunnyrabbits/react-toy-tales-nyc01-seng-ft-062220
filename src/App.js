@@ -22,12 +22,37 @@ class App extends React.Component{
           .then(toys => this.setState({toys: toys}))
   }
 
+  handleClick = () => {
+      let newBoolean = !this.state.display
+      this.setState({
+          display: newBoolean
+      })
+  }
 
-    handleClick = () => {
-    let newBoolean = !this.state.display
-    this.setState({
-      display: newBoolean
-    })
+  likeHandler = (obj) => {
+      let likes = obj.likes += 1
+      let data = {
+          likes: likes
+      }
+      let packet = {
+          method: "PATCH",
+          headers: {
+              "content-type": "application/json",
+              "accept": "application/json"
+          },
+          body: JSON.stringify(data)
+      }
+
+      let newArray = [...this.state.toys]
+      let updatedObject = newArray.find(toy => toy.id === obj.id)
+      updatedObject.likes = likes
+
+      this.setState({
+          toys: newArray
+      })
+
+      fetch(url + obj.id, packet)
+          .then(res=> res.json())
   }
 
   submitHandler = (obj) => {
@@ -85,7 +110,7 @@ class App extends React.Component{
         <div className="buttonContainer">
           <button onClick={this.handleClick}> Add a Toy </button>
         </div>
-        <ToyContainer toys={this.state.toys} deleteHandler={this.deleteHandler}/>
+        <ToyContainer toys={this.state.toys} deleteHandler={this.deleteHandler} likeHandler={this.likeHandler}/>
       </>
     );
   }
